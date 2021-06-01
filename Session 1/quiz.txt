@@ -1,0 +1,10 @@
+var = 30
+if False:
+		if var <= 20:
+			print("hello")
+	print("hi")
+	
+	else:
+			print("something")
+else:
+		print("bye")

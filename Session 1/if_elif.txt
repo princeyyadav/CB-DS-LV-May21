@@ -1,0 +1,10 @@
+rain = False
+var = 30
+if rain:
+	print("it's raining")
+elif var < 40:
+	print("okay")
+if var > 30:
+	print("hi")
+else:
+	print("not okay")

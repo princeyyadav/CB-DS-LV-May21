@@ -54,21 +54,17 @@ w = fit(X, y)
 fig = plt.figure(figsize=(8,8))
 ax = plt.axes(projection='3d')
 
-ax.scatter(X[:,0], X[:,1], y, c=y, cmap='viridis')
+ax.scatter(X[:,0], X[:,1], y, c=y, cmap='seismic')
 
 
 f1 = np.linspace(X[:,0].min(), X[:,0].max(), 50)
 f2 = np.linspace(X[:,1].min(), X[:,1].max(), 50)
-
-# plane parallel to x-y plane and at a height of 3 from origin 
 f1, f2 = np.meshgrid(f1, f2)
-z = np.ones(f1.shape)*3
-ax.plot_surface(f1, f2, z, alpha=0.5)
 
 # prediction plane
 X_ = np.concatenate([f1.reshape(-1,1), f2.reshape(-1,1)], axis=1)
 pred = predict(X_, w).reshape(f1.shape)
-ax.plot_surface(f1, f2, pred, alpha=0.5)
+ax.plot_surface(f1, f2, pred, alpha=0.5, cmap='seismic')
 
 ax.set_xlabel("Feature 1")
 ax.set_ylabel("Feature 2")

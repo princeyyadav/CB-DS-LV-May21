@@ -56,6 +56,12 @@ class Dense:
         # print(da_dI.shape, dI_dw.shape, dI_db.shape)
         da_db = np.einsum('mij,mjk->mik',  da_dI, dI_db)
         return da_dw, da_db
+
+    def backprop_grad(self, grad_loss, grad):
+        dL_dwi = np.einsum('mij,mjkl->mikl', grad_loss, grad['w']).sum(axis=0)
+        dL_dbi = np.einsum('mij,mjk->mik', grad_loss, grad['b']).sum(axis=0)
+        grad_loss = np.einsum('mij,mjk->mik', grad_loss, grad['input'])
+        return dL_dwi, dL_dbi, grad_loss
         
     def update(self, grad, optimizer):
         """ grad: (dL_dwi, dL_dbi)"""

@@ -25,14 +25,8 @@ class Sequential:
     def back_propagate(self, grads, outputs, y):
         grad_loss = self.loss.grad_input(y, outputs[-1]) # dL/dlast_layer_output
         for layer, grad in list(zip(self.layers, grads))[::-1]:
-#             print(grad_loss.shape, grad['w'].shape, grad['b'].shape, grad['input'].shape)
-            dL_dwi = np.einsum('mij,mjkl->mikl', grad_loss, grad['w']).sum(axis=0)
-            dL_dbi = np.einsum('mij,mjk->mik', grad_loss, grad['b']).sum(axis=0)
-#             print(dL_dwi.shape, dL_dbi.shape)
-            
-            layer.update((dL_dwi[0], dL_dbi), self.optimizer)
-            grad_loss = np.einsum('mij,mjk->mik', grad_loss, grad['input'])
-            
+            dL_dwi, dL_dbi, grad_loss = layer.backprop_grad(grad_loss, grad)
+            layer.update((dL_dwi[0], dL_dbi), self.optimizer)            
 
     def fit(self, X, y, epochs, optimizer, learning_rate, verbose=1):
         self.optimizer = optimizer(learning_rate)

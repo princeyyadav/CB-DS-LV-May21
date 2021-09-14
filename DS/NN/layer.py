@@ -63,6 +63,12 @@ class Dense:
         grad_loss = np.einsum('mij,mjk->mik', grad_loss, grad['input'])
         return dL_dwi, dL_dbi, grad_loss
         
+    def gradient_dict(self, output):
+        g = {}
+        g['input'] = self.grad_input(output)
+        g['w'], g['b'] = self.grad_parameters(output)
+        return g
+
     def update(self, grad, optimizer):
         """ grad: (dL_dwi, dL_dbi)"""
         self.dot.W = optimizer.minimize(self.dot.W, grad[0])

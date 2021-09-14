@@ -14,9 +14,7 @@ class Sequential:
         outputs = []
         grads = []
         for layer in self.layers:
-            g = {}
-            g['input'] = layer.grad_input(output)
-            g['w'], g['b'] = layer.grad_parameters(output)
+            g = layer.gradient_dict(output)
             grads.append(g)
             output = layer.eval(output)
             outputs.append(output)

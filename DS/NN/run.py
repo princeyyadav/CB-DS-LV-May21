@@ -12,9 +12,9 @@ if __name__ == '__main__':
     print("X", X.shape, "y:", y.shape)
 
     model = Sequential(BinaryCrossEntropy())
-    model.add(Dense(input_size = 2, activation=Sigmoid(), units=3))
-    model.add(Dense(input_size = 3, activation=Sigmoid(), units=2))
-    model.add(Dense(input_size = 2, activation=Sigmoid(), units=1))
+    model.add(Dense, input_size = 2, activation=Sigmoid(), units=3)
+    model.add(Dense, input_size = 3, activation=Sigmoid(), units=2)
+    model.add(Dense, input_size = 2, activation=Sigmoid(), units=1)
 
     model.summary()
 
@@ -23,4 +23,4 @@ if __name__ == '__main__':
     print("Loss", model.loss(y, ypred))
     print("Accuracy", model.accuracy(y, ypred))
 
-    model.fit(X, y, epochs=1000, optimizer=GradientDescentOptimizer, learning_rate=0.005, verbose=1)
+    model.fit(X, y, epochs=1000, optimizer=GradientDescentOptimizer, learning_rate=0.005, verbose=1, batch_size=1)

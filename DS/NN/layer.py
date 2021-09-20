@@ -35,6 +35,8 @@ class Dense:
         activation: some activation funtion
         units: no. of neurons in current layer 
         """
+        if isinstance(input_size, tuple):
+            input_size = input_size[1]
         self.activation = activation
         self.units = units
         self.dot = Dot(input_size, units)
@@ -58,7 +60,7 @@ class Dense:
         return da_dw, da_db
 
     def backprop_grad(self, grad_loss, grad):
-        dL_dwi = np.einsum('mij,mjkl->mikl', grad_loss, grad['w']).sum(axis=0)
+        dL_dwi = np.einsum('mij,mjkl->mikl', grad_loss, grad['w']).sum(axis=0)[0]
         dL_dbi = np.einsum('mij,mjk->mik', grad_loss, grad['b']).sum(axis=0)
         grad_loss = np.einsum('mij,mjk->mik', grad_loss, grad['input'])
         return dL_dwi, dL_dbi, grad_loss
@@ -80,3 +82,6 @@ class Dense:
     def get_total_parameters(self):
         w_shape, b_shape = self.dot.get_parameter_shape()
         return np.prod(w_shape) + np.prod(b_shape)
+
+    def get_output_size(self):
+        return self.dot.b.shape # (1,units)
